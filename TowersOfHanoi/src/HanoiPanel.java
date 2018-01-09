@@ -115,14 +115,18 @@ public class HanoiPanel extends JComponent implements Runnable
 	 * @param helper needle to put top n-1 disks on
 	 * @throws InterruptedException if the animation is interrupted
 	 */
-	private void recHanoi (int numDisks, DiskStack first, DiskStack last, DiskStack helper) throws InterruptedException
-	{
-		// Base case.  Simply move the 1 disk
-	   // Move top n-1 disks to the helper needle
-   	// Move the bottom disk
-		// Move the n-1 disks on top of the bottom disk in its new location
-		
-		
+	private void recHanoi (int numDisks, DiskStack first, DiskStack last, DiskStack helper) throws InterruptedException {
+		//code frome Gabby, thx
+		if (numDisks == 1)	// Base case. Simply move the 1 disk
+			moveDisk(first, last);	//
+		else {
+			// Move top n-1 disks to the helper needle
+			recHanoi(numDisks-1, first, helper, last);
+			// Move the bottom disk
+			moveDisk(first, last);
+			// Move the n-1 disks on top of the bottom disk in its new location
+			recHanoi(numDisks-1, helper, last, first);
+		}
 	}
 	
 	/**
