@@ -116,16 +116,22 @@ public class HanoiPanel extends JComponent implements Runnable
 	 * @throws InterruptedException if the animation is interrupted
 	 */
 	private void recHanoi (int numDisks, DiskStack first, DiskStack last, DiskStack helper) throws InterruptedException {
-		//code frome Gabby, thx
+		//code from Gabby, thx
 		if (numDisks == 1)	// Base case. Simply move the 1 disk
-			moveDisk(first, last);	//
+			moveDisk(first, last);	//moves the top disk on the first needle to the last needle (last needle on first call is the 3rd/intuitive last)
 		else {
-			// Move top n-1 disks to the helper needle
-			recHanoi(numDisks-1, first, helper, last);
-			// Move the bottom disk
-			moveDisk(first, last);
-			// Move the n-1 disks on top of the bottom disk in its new location
-			recHanoi(numDisks-1, helper, last, first);
+			// 1. Move top n-1 disks to the helper needle
+			recHanoi(numDisks-1, first, helper, last);	//(on first call) Isolates the next largest disk on the first needle, uses middle needle as helper, sets destination to 3rd post.
+			// 2. Move the bottom disk
+			moveDisk(first, last);	//Now that the next largest disk can be moved isolated, move it to the open/accessible post (first call is 3rd needle, second call is 1st needle, third call is 2nd needle ...)
+			// 3. Move the n-1 disks on top of the bottom disk in its new location
+			recHanoi(numDisks-1, helper, last, first);	//Top disk on first needle from first call is 'solved' for now
+				//After this call, the disk that was just moved is disregarded, helper is treated as first needle from first call (unaccessible), last disk is accessible and gets used to help, 1st (far left) needle is treated as the destination to set up for next call
+					
+			/** TODO still struggling to figure out how the 3rd part gets called
+			 *  (as a sort of cleanup?) after part 1 decremements numDisks down to 1, 
+			 *  Sort of makes sense with just 3 disks, with more than that it becomes impossible for me to trace mentally
+			**/
 		}
 	}
 	
